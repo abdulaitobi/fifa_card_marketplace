@@ -46,6 +46,10 @@
                             <h3><%= p.playername %></h3>
                             <p class="player-country"><%= country ? country.name : p.countryname %></p>
                             <p class="player-price">$<%= p.price %></p>
+                            <div class="player-card-actions">
+                                <button class="btn btn-danger mt-2" onclick="deletePlayer('<%= p.id %>')">Delete</button>
+                                <button class="btn btn-warning mt-2" onclick="editPlayer('<%= p.id %>')">Edit</button>
+                            </div>
                         </div>
                     <% }) %>
                 <% } else { %>

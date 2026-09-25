@@ -101,3 +101,7 @@ body{
     margin-top: 3vh;
     width: 50vw;
 }
+.player-card-actions{
+    display: flex;
+    gap: 0.5rem;
+}
