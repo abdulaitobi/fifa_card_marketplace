@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="/style.css">
+        <script src="/script.js" defer></script>
+    </head>
+    <body class="bg-success bg-gradient">
+        <div class="main-content">
+            <h1><a href="/" style="color: white; text-decoration: none;">Fifa Card Inventory</a></h1>
+            <button id="add-player-btn" type="button" class="btn btn-dark">Add Player</button>
+            <div class="bg-black bg-gradient" id="add-player-form">
+                <form action="/addPlayer" method="POST">
+                    <label for="playerName" class="form-label">Player Name</label>
+                    <input name="playerName" type="text" class="form-control" placeholder="Enter player name" required>
+                    <label for="nationality-search" class="form-label">Nationality</label>
+                    <div class="autocomplete" id="nationality-autocomplete">
+                        <div class="nationality-input-group">
+                            <img id="nationality-flag" class="flag-preview" alt="" hidden />
+                            <input type="text" id="nationality-search" class="form-control" placeholder="Search a country" autocomplete="off" required/>
+                        </div>
+                        <input type="hidden" name="nationality" id="nationality-code" />
+                        <ul id="nationality-suggestions" class="autocomplete-suggestions" hidden></ul>
+                    </div>
+                    <script id="countries-data" type="application/json"><%- JSON.stringify(typeof countries !== 'undefined' ? countries : []).replace(/</g, '\\u003c') %></script>
+                    <label for="price" class="form-label">Price</label>
+                    <input name="price" type="number" class="form-control" placeholder="Enter price" required>
+                    <button type="submit" class="btn btn-primary mt-2">Save</button>
+                    <button type="button" class="btn btn-secondary mt-2" id="cancel-add-player">Cancel</button>
+                </form>
+            </div>
+            <div class="container-fluid">
+                <form class="d-flex" role="search" action="/searchPlayers" method="get">
+                    <input required name="search-query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                    <button class="btn btn-dark" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-display">
+            <% if (typeof player !== 'undefined') { %>
+                <% if (player.length > 0) { %>
+                    <% player.forEach(p => { %>
+                        <% const country = (typeof countries !== 'undefined' ? countries : []).find(c => c.code === p.countryname); %>
+                        <div class="player-card">
+                            <img class="player-flag" src="https://flagcdn.com/48x36/<%= (p.countryname || '').toLowerCase() %>.png" alt="<%= country ? country.name : p.countryname %> flag" />
+                            <h3><%= p.playername %></h3>
+                            <p class="player-country"><%= country ? country.name : p.countryname %></p>
+                            <p class="player-price">$<%= p.price %></p>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <p style="grid-column: 2;">No players found.</p>
+                <% } %>
+            <% } %>
+        </div>
+    </body>
+</html>
