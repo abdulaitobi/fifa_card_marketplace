@@ -32,30 +32,30 @@
             <div class="container-fluid">
                 <form class="d-flex" role="search" action="/searchPlayers" method="get">
                     <input required name="search-query" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                    <button class="btn btn-dark" type="submit">Search</button>
+                    <button id="player-search-btn" class="btn btn-dark" type="submit">Search</button>
                 </form>
             </div>
         </div>
-        <div class="card-display">
-            <% if (typeof player !== 'undefined') { %>
+        <% if (typeof player !== 'undefined') { %>
+            <div id="card-display">
                 <% if (player.length > 0) { %>
                     <% player.forEach(p => { %>
                         <% const country = (typeof countries !== 'undefined' ? countries : []).find(c => c.code === p.countryname); %>
-                        <div class="player-card">
+                        <div class="player-card" data-player-id="<%= p.id %>">
                             <img class="player-flag" src="https://flagcdn.com/48x36/<%= (p.countryname || '').toLowerCase() %>.png" alt="<%= country ? country.name : p.countryname %> flag" />
                             <h3><%= p.playername %></h3>
                             <p class="player-country"><%= country ? country.name : p.countryname %></p>
                             <p class="player-price">$<%= p.price %></p>
                             <div class="player-card-actions">
-                                <button class="btn btn-danger mt-2" onclick="deletePlayer('<%= p.id %>')">Delete</button>
-                                <button class="btn btn-warning mt-2" onclick="editPlayer('<%= p.id %>')">Edit</button>
+                                <button class="btn btn-danger mt-2 delete-player-btn" onclick="deletePlayer('<%= p.id %>')">Delete</button>
+                                <button class="btn btn-warning mt-2 edit-player-btn" onclick="editPlayer('<%= p.id %>')">Edit</button>
                             </div>
                         </div>
                     <% }) %>
                 <% } else { %>
                     <p style="grid-column: 2;">No players found.</p>
                 <% } %>
-            <% } %>
-        </div>
+            </div>
+        <% } %>
     </body>
 </html>

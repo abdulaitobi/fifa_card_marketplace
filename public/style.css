@@ -8,9 +8,9 @@ body{
     align-items: center;
 }
 
-.card-display{
-    display: grid;
+#card-display{
     text-align: center;
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
 }
 

@@ -3,13 +3,16 @@ import { getCountries } from "../db/countryService.js";
 import { addPlayer } from "../db/queries.js"
 
 export const searchPlayersController = async (req, res) => {
-  const query = req.query["search-query"];
+  const query = req.query["search-query"]?.trim();
 
   try {
-    const [countries, player] = await Promise.all([
-        getCountries(),
-        query ? searchPlayers(query) : Promise.resolve([]),
-    ]);
+    const countries = await getCountries();
+
+    if (!query) {
+      return res.render("index", { countries, selected: null });
+    }
+
+    const player = await searchPlayers(query);
     res.render("index", { countries, player, selected: null });
   } catch (error) {
     console.error(error);
@@ -28,7 +31,6 @@ export const createPlayer = async (req, res) => {
   if (!country) {
     return res.status(400).render("index", {
       countries,
-      player: [],
       selected: null,
       error: "Please select a valid country",
     });
