@@ -43,8 +43,8 @@
                         <% const country = (typeof countries !== 'undefined' ? countries : []).find(c => c.code === p.countryname); %>
                         <div class="player-card" data-player-id="<%= p.id %>">
                             <img class="player-flag" src="https://flagcdn.com/48x36/<%= (p.countryname || '').toLowerCase() %>.png" alt="<%= country ? country.name : p.countryname %> flag" />
-                            <h3><%= p.playername %></h3>
-                            <p class="player-country"><%= country ? country.name : p.countryname %></p>
+                            <h3 class="player-name"><%= p.playername %></h3>
+                            <p class="player-nationality"><%= country ? country.name : p.countryname %></p>
                             <p class="player-price">$<%= p.price %></p>
                             <div class="player-card-actions">
                                 <button class="btn btn-danger mt-2 delete-player-btn" onclick="deletePlayer('<%= p.id %>')">Delete</button>

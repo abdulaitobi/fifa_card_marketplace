@@ -1,5 +1,6 @@
 let addPlayerBtn = document.getElementById("add-player-btn");
 let addPlayerForm = document.getElementById("add-player-form");
+let cardDisplay = document.getElementById("card-display");
 
 addPlayerBtn.addEventListener("click", () => {
     addPlayerForm.style.display = "block";
@@ -11,6 +12,61 @@ if (cancelAddPlayerBtn) {
         addPlayerForm.style.display = "none";
     });
 }
+
+cardDisplay.addEventListener("click", async(e) => {
+    const card = e.target.closest(".player-card");
+    if (!card) return;
+    const playerId = card.dataset.playerId;
+    const playerName = card.querySelector(".player-name").textContent.trim();
+    const nationality = card.querySelector(".player-nationality").textContent.trim();
+    const price = card.querySelector(".player-price").textContent.trim();
+
+    if(e.target.classList.contains("delete-player-btn")) {
+        if(!confirm("Are you sure you want to delete this player?")) return;
+
+        const response = await fetch(url, { method: "DELETE" });
+        if (response.ok) {
+            card.remove();
+        } else {
+            alert("Failed to delete player.");
+        }
+    }
+
+    if(e.target.classList.contains("edit-player-btn")) {
+        const playerName = card.querySelector(".player-name").textContent;
+        const nationality = card.querySelector(".player-nationality").textContent;
+        const price = card.querySelector(".player-price").textContent;
+
+        const newPlayerName = prompt("Enter new player name:", playerName);
+        const newNationality = prompt("Enter new nationality:", nationality);
+        const newPrice = prompt("Enter new price:", price);
+
+        if(newPlayerName == null || newNationality == null || newPrice == null) {
+            return;
+        }
+
+        const response = await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: newPlayerName,
+                nationality: newNationality,
+                price: newPrice
+            })
+        });
+
+        if (response.ok) {
+            const updatedPlayer = await response.json();
+            card.querySelector(".player-name").textContent = updatedPlayer.playername;
+            card.querySelector(".player-nationality").textContent = updatedPlayer.countryname;
+            card.querySelector(".player-price").textContent = updatedPlayer.price;
+        } else {
+            alert("Failed to update player.");
+        }
+    }
+});
 
 const countriesDataEl = document.getElementById("countries-data");
 const countries = countriesDataEl ? JSON.parse(countriesDataEl.textContent || "[]") : [];

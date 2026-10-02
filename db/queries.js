@@ -41,7 +41,23 @@ async function getCountryByName(req, res) {
   }
 };
 
+async function updatePlayer(playerId, playerName, nationality, price) {
+    await pool.query(
+        "UPDATE players SET playername = $1, countryname = $2, price = $3 WHERE id = $4",
+        [playerName, nationality, price, playerId]
+    );
+}
+
+async function deletePlayer(playerId) {
+    await pool.query(
+        "DELETE FROM players WHERE id = $1",
+        [playerId]
+    );
+}
+
 module.exports = {
   searchPlayers,
-  addPlayer
+  addPlayer,
+  updatePlayer,
+  deletePlayer
 };

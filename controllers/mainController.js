@@ -1,6 +1,8 @@
 import { searchPlayers } from "../db/queries.js";
 import { getCountries } from "../db/countryService.js";
 import { addPlayer } from "../db/queries.js"
+import { updatePlayer } from "../db/queries.js";
+import { deletePlayer } from "../db/queries.js";
 
 export const searchPlayersController = async (req, res) => {
   const query = req.query["search-query"]?.trim();
@@ -52,5 +54,29 @@ export const renderForm = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
+  }
+};
+
+export const updatePlayerController = async (req, res) => {
+  const { playerId, playerName, nationality, price } = req.body;
+
+  try {
+    await updatePlayer(playerId, playerName, nationality, price);
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
+export const deletePlayerController = async (req, res) => {
+  const { playerId } = req.body;
+
+  try {
+    await deletePlayer(playerId);
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
   }
 };
