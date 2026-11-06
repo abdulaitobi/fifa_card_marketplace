@@ -1,15 +1,13 @@
 const { Router } = require("express");
-const { searchPlayersController } = require("../controllers/mainController");
-const {createPlayer} = require("../controllers/mainController");
-const { updatePlayerController } = require("../controllers/mainController");
-const { deletePlayerController } = require("../controllers/mainController");
+const { showInventory, playerId, editPlayer, savePlayer, deletePlayer } = require("../controllers/mainController");
 
 const mainRouter = Router();
 
-mainRouter.get("/", searchPlayersController);
-
-mainRouter.post("/", createPlayer);
-mainRouter.post("/update", updatePlayerController);
-mainRouter.post("/delete", deletePlayerController);
+mainRouter.param("id", (req, res, next) => playerId(req, res, next));
+mainRouter.get(["/", "/searchPlayers"], showInventory);
+mainRouter.post("/addPlayer", savePlayer);
+mainRouter.get("/players/:id/edit", editPlayer);
+mainRouter.post("/players/:id/edit", savePlayer);
+mainRouter.post("/players/:id/delete", deletePlayer);
 
 module.exports = mainRouter;

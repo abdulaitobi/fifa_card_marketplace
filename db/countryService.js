@@ -1,39 +1,23 @@
-const COUNTRIES_API_URL = "https://api.restcountries.com/countries/v5";
-const PAGE_SIZE = 100;
+// ISO 3166-1 alpha-2 codes. Store the code so names and flags can be derived.
+const codes = `
+AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ
+BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ
+CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ
+DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR
+GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY
+HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP
+KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY
+MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ
+NA NC NE NF NG NI NL NO NP NR NU NZ OM
+PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW
+SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ
+TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ
+UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW
+`.trim().split(/\s+/);
 
-export async function getCountries() {
-  const apiKey = process.env.RESTCOUNTRIES_API_KEY;
+const names = new Intl.DisplayNames(["en"], { type: "region" });
+const countries = codes.map((code) => ({ code, name: names.of(code) }))
+  .sort((a, b) => a.name.localeCompare(b.name, "en"));
+const countryNames = new Map(countries.map(({ code, name }) => [code, name]));
 
-  if (!apiKey) {
-    throw new Error("Missing RESTCOUNTRIES_API_KEY environment variable");
-  }
-
-  const countries = [];
-  let offset = 0;
-  let more = true;
-
-  while (more) {
-    const response = await fetch(
-      `${COUNTRIES_API_URL}?response_fields=names.common,codes.alpha_2&limit=${PAGE_SIZE}&offset=${offset}`,
-      { headers: { Authorization: `Bearer ${apiKey}` } }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch countries: ${response.status} ${response.statusText}`);
-    }
-
-    const payload = await response.json();
-
-    countries.push(
-      ...payload.data.objects.map((country) => ({
-        code: country.codes.alpha_2,
-        name: country.names.common,
-      }))
-    );
-
-    more = payload.data.meta.more;
-    offset += PAGE_SIZE;
-  }
-
-  return countries.sort((a, b) => a.name.localeCompare(b.name));
-}
+module.exports = { countries, countryNames };
