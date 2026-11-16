@@ -1,6 +1,6 @@
-# FIFA Card Tracker
+# FIFA Card MarketPlace
 
-Browse and search the inventory, add a player card, edit its name, nationality or price, and delete cards. Changes are saved in PostgreSQL.
+Browse and search the inventory, add a player card, edit its name, nationality or price, and delete cards and trade with your friends. Changes are saved in PostgreSQL.
 
 1. Start PostgreSQL. For a fresh local setup, create the database with `createdb fifa-cards`.
 2. Run `npm install`. Copy `.env.example` to `.env` if you don't already have one. Set `DATABASE_URL` or the `PG*` variables for your PostgreSQL connection as needed.
