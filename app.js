@@ -13,12 +13,12 @@ app.use("/", mainRouter);
 
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).send("Could not load or save the inventory. Please try again.");
+  res.status(500).send("Could not load or save items. Please try again.");
 });
 
 if (require.main === module) {
   const port = process.env.PORT || 3000;
-  app.listen(port, () => console.log(`FIFA Card Inventory listening on port ${port}`));
+  app.listen(port, () => console.log(`FIFA Card marketplace listening on port ${port}`));
 }
 
 module.exports = app;
