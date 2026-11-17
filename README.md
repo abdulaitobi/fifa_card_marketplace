@@ -1,10 +1,16 @@
-# FIFA Card Tracker
+# FIFA Card Marketplace
 
-Browse and search the inventory, add a player card, edit its name, nationality or price, and delete cards. Changes are saved in PostgreSQL.
+Browse and manage a shared inventory of FIFA player cards. Each listing shows the player's name, nationality, and listed price.
 
-1. Start PostgreSQL. For a fresh local setup, create the database with `createdb fifa-cards`.
-2. Run `npm install`. Copy `.env.example` to `.env` if you don't already have one. Set `DATABASE_URL` or the `PG*` variables for your PostgreSQL connection as needed.
-3. Run `npm run db:setup` to create the `players` table if it doesn't exist. This leaves an existing table and its cards intact.
-4. Run `npm start` and open [the inventory](http://localhost:3000).
+**[Open the live marketplace →](https://fifa-card-marketplace.onrender.com/)**
 
-The app has no login or role checks. Anyone who can reach it can change the inventory; keep it local or on a trusted network.
+## What you can do
+
+- **Browse and search** the inventory by player name.
+- **Add a card** with a player name, nationality, and price.
+- **Edit a listing** to update its details or adjust its price.
+- **Delete a card** from the inventory after confirming.
+
+## Built with
+
+Node.js and Express handle requests, EJS and Bootstrap render the interface, and PostgreSQL stores the inventory.
